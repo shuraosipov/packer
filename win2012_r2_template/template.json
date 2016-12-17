@@ -1,0 +1,45 @@
+{
+  "variables": {
+    "build_version": "001"
+  },  
+  
+  "builders": [
+    {
+    "type": "virtualbox-iso",
+    "headless": "false",
+    "guest_os_type": "Windows2012_64",
+    "name": "Windows Server 2012 R2 Image",
+    "vm_name": "wsrv-{{user `build_version`}}",
+    "disk_size": "30720",
+    "vboxmanage": [
+    	["modifyvm", "{{.Name}}", "--natpf1", "winrm,tcp,,55985,,5985"],
+    	["modifyvm", "{{.Name}}", "--memory", "1024"],
+    	["modifyvm", "{{.Name}}", "--cpus", "2"]
+  	],
+    "iso_url": "iso/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO",
+    "iso_checksum": "5b5e08c490ad16b59b1d9fab0def883a",
+    "iso_checksum_type": "md5",
+    "communicator": "winrm",
+    "winrm_username": "vagrant",
+    "winrm_password": "vagrant",
+    "winrm_timeout": "5h",
+    "winrm_port": "55985",
+    "guest_additions_mode": "disable",
+    "shutdown_command": "script/packer-shutdown.bat",
+    "shutdown_timeout": "15m",
+    "floppy_files": [
+      "answer_files/Autounattend.xml",
+      "scripts/configure-winrm.ps1"
+    ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "powershell",
+      "elevated_user": "vagrant",
+      "elevated_password": "vagrant",
+      "script": "scripts/prepare-environment.ps1",
+      "remote_path": "c:/Windows/Temp/prepare-environment.ps1"
+    }
+  ]
+}
