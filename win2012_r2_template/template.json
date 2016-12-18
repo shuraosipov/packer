@@ -1,6 +1,6 @@
 {
   "variables": {
-    "build_version": "001"
+    "build_version": "02"
   },  
   
   "builders": [
@@ -25,7 +25,7 @@
     "winrm_timeout": "5h",
     "winrm_port": "55985",
     "guest_additions_mode": "disable",
-    "shutdown_command": "script/packer-shutdown.bat",
+    "shutdown_command": "c:/windows/system32/sysprep/sysprep.exe /generalize /oobe /quiet /shutdown",
     "shutdown_timeout": "15m",
     "floppy_files": [
       "answer_files/Autounattend.xml",
